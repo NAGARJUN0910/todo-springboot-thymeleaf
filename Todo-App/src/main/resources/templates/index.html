@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Todo App</title>
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            margin-top: 40px;
+            background: white;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        /* Title */
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Form */
+        form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        form input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        form input[type="text"]:focus {
+            border-color: #007bff;
+        }
+
+        form button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        form button:hover {
+            background: #0056b3;
+        }
+
+        /* Task List */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: background 0.2s;
+        }
+
+        li:hover {
+            background: #f1f1f1;
+        }
+
+        li span {
+            flex: 1;
+            font-size: 16px;
+        }
+
+        li a {
+            text-decoration: none;
+            margin-left: 10px;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Complete button */
+        li a:first-of-type {
+            background: #28a745;
+            color: white;
+        }
+
+        li a:first-of-type:hover {
+            background: #218838;
+        }
+
+        /* Delete button */
+        li a:last-of-type {
+            background: #dc3545;
+            color: white;
+        }
+
+        li a:last-of-type:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Todo List</h1>
+
+    <form th:action="@{/add}" method="post" th:object="${task}">
+        <input type="text" th:field="*{title}" placeholder="Enter task" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        <li th:each="t : ${tasks}">
+            <span th:text="${t.title}" 
+                  th:style="${t.completed} ? 'text-decoration: line-through; color: gray;' : ''"></span>
+
+            <a th:if="${!t.completed}" th:href="@{/complete/{id}(id=${t.id})}">Complete</a>
+            <a th:href="@{/delete/{id}(id=${t.id})}">Delete</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

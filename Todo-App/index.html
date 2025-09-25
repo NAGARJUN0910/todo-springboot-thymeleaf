@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Todo App</title>
+</head>
+<body>
+    <h1>Todo List</h1>
+
+    <form th:action="@{/add}" method="post" th:object="${task}">
+        <input type="text" th:field="*{title}" placeholder="Enter task" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        <li th:each="t : ${tasks}">
+            <span th:text="${t.title}" 
+                  th:style="${t.completed} ? 'text-decoration: line-through;' : ''"></span>
+
+            <a th:if="${!t.completed}" th:href="@{/complete/{id}(id=${t.id})}">Complete</a>
+            <a th:href="@{/delete/{id}(id=${t.id})}">Delete</a>
+        </li>
+    </ul>
+</body>
+</html>
